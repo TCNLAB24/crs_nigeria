@@ -13,3 +13,7 @@ This study characterizes sub-national heterogeneity in rubella transmission with
 
 **data_management.Rmd**: This Rmarkdown document prepares the demographic and epidemiological data necessary for subsequent analyses. It uses the following datasets: 
 - geographical polygons from [GADM](https://gadm.org)
+- population counts by local government area from [WorldPop](https://www.worldpop.org)
+- age-specific fertility rates from [WorldPop](https://www.worldpop.org)
+- life table at national level from [UN Department of Economic and Social Affairs](https://population.un.org/wpp/Download/Standard/Mortality/)
+
