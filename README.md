@@ -11,3 +11,5 @@ This study characterizes sub-national heterogeneity in rubella transmission with
 
 ## Contents
 
+**data_management.Rmd**: This Rmarkdown document prepares the demographic and epidemiological data necessary for subsequent analyses. It uses the following datasets: 
+- C
