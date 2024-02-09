@@ -8,3 +8,6 @@ This study characterizes sub-national heterogeneity in rubella transmission with
 ## Version History
 
 **Feb 9, 2024**: Uploaded first version of code. 
+
+## Contents
+
