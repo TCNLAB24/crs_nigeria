@@ -33,4 +33,14 @@ This study characterizes sub-national heterogeneity in rubella transmission with
 
 **local_data**: This folder contains relevant local data including state-level first-dose measles-containing-vaccine coverage (ng1_mcv1_data.xlsx), state-level zone designations (ng1_zone_designations.csv) and structure of hypothetical rubella vaccination campaigns (summarised_general_sia_scenario1.xlsx, summarised_general_sia_scenario2.xlsx). 
 
-**helper_scripts**: This folder contains short helper scripts used by some of the Rmarkdown documents. 
+**helper_scripts**: This folder contains short helper scripts used by some of the Rmarkdown documents. Further details are provided in the respective script headers. 
+
+## Project workflow
+To successfully estimation $R_0$ and perform simulations, please follow the steps below:
+- download required data to local repository (see above)
+- run data_management.Rmd
+- run r0_estimation.Rmd
+- run paramaterization.Rmd
+- run initial_conditions.Rmd
+- run model_simulators.Rmd
+Details of specific R packages required for each step are described in the respective Rmarkdown documents. 
