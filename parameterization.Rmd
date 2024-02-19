@@ -228,6 +228,7 @@ construct_beta_matrix <- function(base_agegrps, base_betas, base_contact_mat, de
 generate_parameters <- function(this_state, pop_data, fertility_data, mortality_data, omegas,
                                 agegrps, base_betas, base_agegrps, base_contact_mat=base_contact_mat) {
   # create output file path
+  if (!file.exists(PARAMETERS_FOLDER)) dir.create(PARAMETERS_FOLDER)
   state_parameter_file_path <- file.path(PARAMETERS_FOLDER, this_state)
   if (!file.exists(state_parameter_file_path)) dir.create(state_parameter_file_path)
   
@@ -284,6 +285,7 @@ for (ii in states) {
                                                                           this_state=ii,
                                                                           desired_agegrps=desired_agegrps)
 }
+if (!file.exists(INITIAL_CONDITIONS_FOLDER)) dir.create(INITIAL_CONDITIONS_FOLDER)
 saveRDS(initial_age_distribution_list, file.path(INITIAL_CONDITIONS_FOLDER, "initial_age_distribution_list.rds"))
 ```
 
@@ -311,5 +313,6 @@ Next, we generate and save the initial age distribution for the country.
 initial_age_distribution <- compute_initial_age_distribution(pop_data=ng0_pop, 
                                                              this_state="Nigeria", 
                                                              desired_agegrps=desired_agegrps)
+if (!file.exists(INITIAL_CONDITIONS_FOLDER)) dir.create(INITIAL_CONDITIONS_FOLDER)
 saveRDS(initial_age_distribution, file.path(INITIAL_CONDITIONS_FOLDER, "initial_age_distribution_country.rds"))
 ```
