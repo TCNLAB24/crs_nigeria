@@ -21,7 +21,7 @@ This study characterizes sub-national heterogeneity in rubella transmission with
 - geographical polygons from [GADM](https://gadm.org)
 - population counts by local government area from [WorldPop](https://www.worldpop.org)
 - age-specific fertility rates are available in the `local_data` folder. 
-- life table at national level from [UN Department of Economic and Social Affairs](https://population.un.org/wpp/Download/Standard/Mortality/)
+- abridged life tables for both sexes at national level from [UN Department of Economic and Social Affairs](https://population.un.org/wpp/Download/Standard/Mortality/)
 
 `r0_estimation.Rmd`: This Rmarkdown document estimates the $R_0$ for rubella in each state of Nigeria using age-stratified serological survey data. 
 
