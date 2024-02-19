@@ -278,21 +278,20 @@ f <- function(this_state) {
   for (tt in 1:number_samples) {
     beta_estimate <- compute_betas(lambdas=lambda_data[tt, ], mus=mu, delta=deltas[tt], agegrps=agegrps, 
                                    initN=initN, equN=equN, N=N, L=L, D=10/365, contact_mat=contact_mat)
-    saveRDS(beta_estimate, file=file.path(DATA_FOLDER, "R0_beta_estimates", "tmp", paste0(this_state, "_beta_estimate", tt, ".rds")))
+    saveRDS(beta_estimate, file=file.path(DATA_FOLDER, "tmp", paste0(this_state, "_beta_estimate", tt, ".rds")))
   }
-  state_beta_estimates <- do.call(rbind, lapply(1:number_samples, function(x) readRDS(file.path(DATA_FOLDER, 
-                                                                                              "R0_beta_estimates", "tmp", paste0(this_state, "_beta_estimate", x, ".rds")))))
+  state_beta_estimates <- do.call(rbind, lapply(1:number_samples, function(x) readRDS(file.path(DATA_FOLDER, "tmp", paste0(this_state, "_beta_estimate", x, ".rds")))))
   state_R0_estimates <- sapply(1:nrow(state_beta_estimates), function(x) 
     compute_R0(agegrps=agegrps, initN=initN, equN=equN, N=N, L=L, D=10/365, contact_mat=contact_mat, 
                betas=state_beta_estimates[x, ], M_mat=M_mat))
   state_estimates <- cbind(state_R0_estimates, state_beta_estimates)
   file_name <- paste0(this_state, "_R0_beta_estimates.rds")
-  saveRDS(state_estimates, file=file.path(DATA_FOLDER, "R0_beta_estimates", file_name))
+  saveRDS(state_estimates, file=file.path(DATA_FOLDER, file_name))
   gc()
 }
+if (!file.exists(file.path(DATA_FOLDER, "tmp"))) dir.create(file.path(DATA_FOLDER, "tmp"))
 {parallel::mclapply(as.list(states), f, mc.cores=3)}
 state_estimates <- lapply(states, function(x) readRDS(file=file.path(DATA_FOLDER, 
-                                                                     "R0_beta_estimates", 
                                                                      paste0(x, "_R0_beta_estimates.rds"))))
 names(state_estimates) <- states
 R0_estimates <- do.call(cbind, lapply(states, function(x) state_estimates[[x]][, 1])) 
@@ -421,14 +420,13 @@ estimate_beta <- function(tt) {
                                  delta=deltas[tt], agegrps=agegrps, 
                                  initN=initN, equN=equN, N=N, L=L, D=10/365, 
                                  contact_mat=contact_mat)
-  saveRDS(beta_estimate, file=file.path(DATA_FOLDER, "R0_beta_estimates", 
-                                        "tmp", paste0("Nigeria", "_beta_estimate", tt, ".rds")))
+  saveRDS(beta_estimate, file=file.path(DATA_FOLDER, "tmp", paste0("Nigeria", "_beta_estimate", tt, ".rds")))
 }
+if (!file.exists(file.path(DATA_FOLDER, "tmp"))) dir.create(file.path(DATA_FOLDER, "tmp"))
 number_samples <- 2000
 {parallel::mclapply(as.list(1:number_samples), estimate_beta, mc.cores=3)}
 ng0_beta_estimates <- do.call(rbind, lapply(1:number_samples, function(x) 
-  readRDS(file.path(DATA_FOLDER, "R0_beta_estimates", "tmp", 
-                    paste0("Nigeria", "_beta_estimate", x, ".rds"))))) %>% 
+  readRDS(file.path(DATA_FOLDER, "tmp", paste0("Nigeria", "_beta_estimate", x, ".rds"))))) %>% 
   as.data.frame() %>% 
   setNames(c("beta1", "beta2", "beta3"))
 ng0_R0_estimates <- sapply(1:nrow(ng0_beta_estimates), function(x) 
