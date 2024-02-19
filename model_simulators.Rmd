@@ -63,13 +63,16 @@ general_sia_scenario2_path <- file.path(DATA_FOLDER, "summarised_general_sia_sce
 These are the paths we use for the simulation output. 
 
 ```{r}
-ALL_OUTPUT_FOLDER <- "/output/"
-VALIDATION_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "validation_simulations", "raw_simulations")
-STATIC_RISK_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "static_risk_simulations", "raw_simulations")
-LANDSCAPE_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "static_risk_simulations", "landscape_simulations")
-DYNAMIC_RISK_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "dynamic_risk_simulations", "raw_simulations")
-SUMMARY_STATIC_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "static_risk_simulations", "summary_simulations")
-SUMMARY_DYNAMIC_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "dynamic_risk_simulations", "summary_simulations")
+ALL_OUTPUT_FOLDER <- "sim_output/"; if(!file.exists(ALL_OUTPUT_FOLDER)) dir.create(ALL_OUTPUT_FOLDER)
+if(!file.exists(file.path(ALL_OUTPUT_FOLDER, "validation_simulations"))) dir.create(file.path(ALL_OUTPUT_FOLDER, "validation_simulations"))
+if(!file.exists(file.path(ALL_OUTPUT_FOLDER, "dynamic_risk_simulations"))) dir.create(file.path(ALL_OUTPUT_FOLDER, "dynamic_risk_simulations"))
+if(!file.exists(file.path(ALL_OUTPUT_FOLDER, "static_risk_simulations"))) dir.create(file.path(ALL_OUTPUT_FOLDER, "static_risk_simulations"))
+VALIDATION_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "validation_simulations", "raw_simulations"); if(!file.exists(VALIDATION_SIMS_FOLDER)) dir.create(VALIDATION_SIMS_FOLDER)
+STATIC_RISK_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "static_risk_simulations", "raw_simulations"); if(!file.exists(STATIC_RISK_SIMS_FOLDER)) dir.create(STATIC_RISK_SIMS_FOLDER)
+LANDSCAPE_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "static_risk_simulations", "landscape_simulations"); if(!file.exists(LANDSCAPE_SIMS_FOLDER)) dir.create(LANDSCAPE_SIMS_FOLDER)
+DYNAMIC_RISK_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "dynamic_risk_simulations", "raw_simulations"); if(!file.exists(DYNAMIC_RISK_SIMS_FOLDER)) dir.create(DYNAMIC_RISK_SIMS_FOLDER)
+SUMMARY_STATIC_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "static_risk_simulations", "summary_simulations"); if(!file.exists(SUMMARY_STATIC_SIMS_FOLDER)) dir.create(SUMMARY_STATIC_SIMS_FOLDER)
+SUMMARY_DYNAMIC_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "dynamic_risk_simulations", "summary_simulations"); if(!file.exists(SUMMARY_DYNAMIC_SIMS_FOLDER)) dir.create(SUMMARY_DYNAMIC_SIMS_FOLDER)
 ```
 
 Change them accordingly if you want to run the script locally on your computer.
@@ -129,8 +132,8 @@ beta_matrices_list <- list()
 omegas_list <- list()
 for (this_state in states) {
   basic_parameters_list[[this_state]] <- readRDS(file=file.path(PARAMETERS_FOLDER, this_state, "basic_parameters.rds"))
-  beta_matrices_list[[this_state]] <- readRDS(file=file.path(PARAMETERS_FOLDER, this_state, "beta_matrices.rds"))[1:100]
-  omegas_list[[this_state]] <- readRDS(file=file.path(PARAMETERS_FOLDER, this_state, "omegas.rds"))[1:100]
+  beta_matrices_list[[this_state]] <- readRDS(file=file.path(PARAMETERS_FOLDER, this_state, "beta_matrices.rds"))[1:200]
+  omegas_list[[this_state]] <- readRDS(file=file.path(PARAMETERS_FOLDER, this_state, "omegas.rds"))[1:200]
 }
 basic_parameters_list[["Nigeria"]] <- readRDS(file=file.path(PARAMETERS_FOLDER, "Nigeria", "basic_parameters.rds"))
 beta_matrices_list[["Nigeria"]] <- readRDS(file=file.path(PARAMETERS_FOLDER, "Nigeria", "beta_matrices.rds"))
@@ -224,8 +227,9 @@ Let's run 30 years of simulations without any routine vaccination. Note: `sim_ty
 no_vac_simulator <- function(this_state, sim_num) {
   tf <- 30
   ext_immi_rate <- 10/10^5/365 # 10 infected immigrant per 100,000 individuals per year
+  simplified_output <- ifelse(sim_num==1, FALSE, TRUE)
   output <- mseirv_static_sim(this_state=this_state, tf=tf, sim_type=0, sim_num=sim_num, 
-                              ext_immi_rate=ext_immi_rate, simplified_output=TRUE)
+                              ext_immi_rate=ext_immi_rate, simplified_output=simplified_output)
   file_name <- paste(this_state, paste0("tf", tf), "noVac", paste0("simNum", sim_num), sep="_")
   saveRDS(output, file=file.path(STATIC_RISK_SIMS_FOLDER, file_name))
 }
@@ -259,8 +263,9 @@ vac_simulator <- function(this_state, sim_num) {
   tf <- 30
   routine_cov <- as.numeric(ng1_mcv1_data[which(ng1_mcv1_data$state==this_state), "MCV1"])
   ext_immi_rate <- 10/10^5/365 # 10 infected immigrant per 100,000 individuals per year
+  simplified_output <- ifelse(sim_num==1, FALSE, TRUE)
   output <- mseirv_static_sim(this_state=this_state, tf=tf, sim_type=1, sim_num=sim_num, 
-                              routine_cov=routine_cov/100, ext_immi_rate=ext_immi_rate, simplified_output=TRUE)
+                              routine_cov=routine_cov/100, ext_immi_rate=ext_immi_rate, simplified_output=simplified_output)
   file_name <- paste(this_state, paste0("tf", tf), "vac", paste0("simNum", sim_num), sep="_")
   saveRDS(output, file=file.path(STATIC_RISK_SIMS_FOLDER, file_name))
 }
@@ -359,6 +364,7 @@ median_input <- data.frame(state=names(state_median_r0_idxs),
                            sim_num=state_median_r0_idxs)
 (parallel::mcmapply(no_vac_simulator, as.character(median_input[["state"]]), median_input[["sim_num"]], mc.cores=5))
 ```
+NOTE: Full results (i.e. `simplified_output=FALSE`) are required for these simulations - must change in `no_vac_simulator`. 
 
 Finally, let's perform the optimization. 
 
@@ -409,6 +415,7 @@ input <- data.frame(state="Nigeria",
                     sim_num=c(median_r0_idx))
 (parallel::mcmapply(no_vac_simulator, as.character(input[["state"]]), input[["sim_num"]], mc.cores=3))
 ```
+NOTE: Full results (i.e. `simplified_output=FALSE`) are required for these simulations - must change in `no_vac_simulator`. 
 
 ```{eval=FALSE, results="hide"}
 statistics <- c("median")
@@ -427,7 +434,8 @@ for (jj in 1:length(statistics)) {
                    eval_g_ineq = eval_g0,
                    opts = list("algorithm"="NLOPT_LN_COBYLA",
                                "xtol_rel"=0.001),
-                   this_state="Nigeria", this_sim_num=r0_idx)
+                   this_state="Nigeria", 
+                   this_sim_num=r0_idx)
   print(result)
   optimization_output_list[[jj]] <- result
 }
