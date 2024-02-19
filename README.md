@@ -11,7 +11,7 @@ This study characterizes sub-national heterogeneity in rubella transmission with
 
 ## Data
 - **Population data**: Population counts stratified by gender and age in 2020 for Nigeria at a resolution of 3 arc seconds were sourced from [WorldPop](https://hub.worldpop.org/geodata/summary?id=50493)
-- **Birth data**: The number of births by age group used in the calculation of age-specific fertility rates were made available by the Demographic and Health Surveys (DHS) Program in Nigeria. 
+- **Birth data**: The number of births by age group used in the calculation of age-specific fertility rates were made available by the Demographic and Health Surveys (DHS) Program in Nigeria (see `ng2_fertility_data.csv` in `local_data`)
 - **Mortality data**: Life tables used to estimate age-specific mortality rates for Nigeria were obtained from [UN Department of Economic and Social Affairs](https://population.un.org/wpp/Download/Standard/Mortality/)
 - **Serological survey data**: Raw seroprevalence data are unavailable due to privacy consideration as datasets include global positioning system coordinates which might enable identification of location of study subjects. For access, please reach out to the corresponding author. 
 
