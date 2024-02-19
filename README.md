@@ -43,6 +43,7 @@ To successfully estimation $R_0$ and perform simulations, please follow the step
 - run `paramaterization.Rmd`
 - run `initial_conditions.Rmd`
 - run `model_simulators.Rmd`
+
 Details of specific R packages required for each step are described in the respective Rmarkdown documents. 
 
 ## Support 
