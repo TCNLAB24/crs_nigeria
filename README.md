@@ -24,7 +24,7 @@ This study characterizes sub-national heterogeneity in rubella transmission with
 - age-specific fertility rates are available in the `local_data` folder (see `ng2_fertility_data.csv`). 
 - abridged life tables for both sexes at the national level from [UN Department of Economic and Social Affairs](https://population.un.org/wpp/Download/Standard/Mortality/).
 
-`r0_estimation.Rmd`: This Rmarkdown document estimates the $R_0$ for rubella in each state of Nigeria using the age-stratified serological survey data.
+`r0_estimation.Rmd`: This Rmarkdown document estimates the $R_0$ for rubella in each state of Nigeria using the age-stratified serological survey data. This script also contains the code for generating **Figure 1**. 
 
 `parameterization.Rmd`: This Rmarkdown document generates the parameteres for the MSEIRV age-structured model used for the simulation of rubella dynamics in each of the 37 states of Nigeria. 
 
