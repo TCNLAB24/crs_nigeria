@@ -440,3 +440,99 @@ saveRDS(ng0_beta_estimates,
         file=file.path(DATA_FOLDER,
                        "ng0_MCMC_piecewise_lambda_fit_beta_estimates.rds"))
 ```
+
+## Figures 
+
+Here, we generate **Figure 1**: Estimates of basic reproduction number across Nigeria. 
+
+```{r}
+## organize the data
+ng0_R0_estimates <- readRDS(file.path(DATA_FOLDER,
+                                      "ng0_MCMC_piecewise_lambda_fit_R0_estimates.rds"))
+state_R0_estimates <- readRDS(file.path(DATA_FOLDER,
+                                        "MCMC_piecewise_lambda_fit_R0_estimates.rds"))
+ng0_R0_summary <- ng0_R0_estimates %>% 
+  data.frame(R0=.) %>% 
+  mutate(state="Nigeria") %>% 
+  group_by(state) %>% 
+  summarise(mean=mean(R0), 
+            l90=quantile(R0, 0.05), 
+            u90=quantile(R0, 0.95), .groups="keep") %>% 
+  as.data.frame() %>% 
+  mutate(geometry=NA)
+  
+states <- unique(pull(ng1_rub_sero_data, state)) %>% sort()
+states[which(states=="Federal Capital Territory")] <- "FCT"
+state_R0_summaries <- state_R0_estimates %>% 
+  apply(2, function(x) c(mean(x), as.numeric(quantile(x, c(0.05, 0.95))))) %>% 
+  t() %>%
+  cbind(states, .) %>%
+  as.data.frame() %>%
+  setNames(c("state", "mean", "l90", "u90")) %>%
+  mutate(mean=as.numeric(mean), l90=as.numeric(l90), u90=as.numeric(u90)) %>% 
+  right_join(mutate(ng1, state=ifelse(state=="Federal Capital Territory", "FCT", state)), 
+             by="state") %>%
+  rbind(., ng0_R0_summary)
+```
+
+```{r}
+# plot the mean estimation and the 90% credible interval of the basic reproductive number
+state_order <- c(states, "Nigeria")
+state_R0_summaries %<>% mutate(state=factor(state, state_order))
+
+state_R0_summary_plot <- ggplot() + 
+  geom_errorbar(data=state_R0_summaries, aes(x=state, ymin=l90, ymax=u90, color=state), width=0.2) +
+  geom_point(data=state_R0_summaries, aes(x=state, y=mean, color=state, fill=state, shape=state), size=1.5) + 
+  geom_hline(yintercept=ng0_R0_summary$mean, linetype="dashed", color="red") + 
+  scale_color_manual(breaks=state_order, values=c(rep("black", length(states)), "red"), guide="none") + 
+  scale_fill_manual(breaks=state_order, values=c(rep("black", length(states)), "red"), guide="none") + 
+  scale_shape_manual(breaks=state_order, values=c(rep(16, length(states)), 18), guide="none") + 
+  scale_y_continuous(limits=c(0, 8.2), breaks=seq(0, 8, 2)) + 
+  labs(y=expression(paste(R[0]))) + 
+  theme_bw() +
+  theme(axis.title.x=element_blank(), 
+        axis.text.x=element_text(size=8, angle=90, vjust=0.4, hjust=1, 
+                                 colour=c(rep("black", length(states)), "red")), 
+        axis.title.y=element_text(color="black", size=8), 
+        axis.text.y=element_text(colour="black", size=8)) + 
+  theme(plot.margin=unit(c(0.1, 0.1, 0.1, 0.2), "cm"), 
+        panel.grid.major.x=element_blank(), panel.grid.minor.y=element_blank(), 
+         panel.background=element_blank(), panel.border=element_blank(), 
+        axis.line.x.bottom = element_line(colour="black"), 
+        axis.line.y.left = element_line(colour="black"))
+```
+
+```{r}
+# plot the map of the mean estimate of R0 in each state and nationally. 
+color_scale <- rep(rev(brewer.pal(5, "RdYlBu")), each=10)
+state_R0_summary_map <- state_R0_summaries %>% 
+  filter(state!="Nigeria") %>% 
+  ggplot() + 
+  geom_sf(mapping=aes(geometry=geometry, fill=mean), color="black", size=0.3) + 
+  scale_fill_gradientn(colors=rep(rev(brewer.pal(5, "RdYlBu")), each=1), breaks=seq(2.5, 6.5, 1), limits=c(2.5, 6.5), 
+                       name=expression(paste("Mean ", R[0], sep=""))) +
+  theme_bw() + 
+  guides(fill=guide_colorbar(title.position="top", title.hjust=0.5, 
+                             ticks.colour="black", frame.colour="black")) + 
+  theme(panel.grid.major=element_blank(), panel.grid.minor=element_blank(),
+        panel.background=element_blank(), panel.border=element_blank(), 
+        axis.line=element_blank(), axis.ticks=element_blank(), axis.text=element_blank(), 
+        axis.title=element_blank()) + 
+  theme(legend.position=c(0.87, 0.15), legend.key.width=unit(0.3, "cm"), 
+        legend.key.height=unit(0.35, "cm"), 
+        legend.text=element_text(size=8), legend.title=element_text(size=8), 
+        legend.box.background=element_blank(), legend.background=element_blank()) + 
+  theme(plot.margin=unit(c(0, 0, 0, 0), "cm"))
+```
+
+
+```{r}
+# combined multiplanel plot
+pA <- cowplot::plot_grid(NULL, state_R0_summary_plot, ncol=1, rel_heights=c(0.05, 1))
+pAB <- cowplot::plot_grid(pA, state_R0_summary_map, nrow=1, labels=c("(a)", "(b)"), 
+                          rel_widths=c(1, 0.4), label_size=10, label_fontface="plain", label_fontfamily="serif")
+scale_factor <- 0.24
+pdf(file=file.path(FIGURES_FOLDER, "R0_estimation_summary_plot.pdf"), w=8.5, h=11*scale_factor)
+print(pAB)
+a <- dev.off()
+```
