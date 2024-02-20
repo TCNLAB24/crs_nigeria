@@ -1,6 +1,6 @@
 # The impact of sub-national heterogeneities in demography and epidemiology on the introduction of rubella vaccination programs in Nigeria
 
-This study characterizes sub-national heterogeneity in rubella transmission within Nigeria and models impact of local rubella vaccine introduction under different scenarios on the incidence of congenital rubella syndrome (CRS). 
+This study characterizes sub-national heterogeneity in rubella transmission within Nigeria and models the impact of local rubella vaccine introduction under different scenarios on the incidence of congenital rubella syndrome (CRS). 
 
 - Details on the methodology are described in: \
   [TO BE UPDATED POST DAPR].
