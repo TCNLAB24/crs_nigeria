@@ -55,9 +55,9 @@ initial_conditions_country_path <- file.path(INITIAL_CONDITIONS_FOLDER, "initial
 initial_age_distribution_country_path <- file.path(INITIAL_CONDITIONS_FOLDER, "initial_age_distribution_country.rds")
 
 # local data 
-ng1_mcv1_data_path <- file.path(DATA_FOLDER, "ng1_mcv1_data.xlsx")
-general_sia_scenario1_path <- file.path(DATA_FOLDER, "summarised_general_sia_scenario1.xlsx")
-general_sia_scenario2_path <- file.path(DATA_FOLDER, "summarised_general_sia_scenario2.xlsx")
+ng1_mcv1_data_path <- file.path(DATA_FOLDER, "ng1_mcv1_data.csv")
+general_sia_scenario1_path <- file.path(DATA_FOLDER, "summarised_general_sia_scenario1.csv")
+general_sia_scenario2_path <- file.path(DATA_FOLDER, "summarised_general_sia_scenario2.csv")
 ```
 
 These are the paths we use for the simulation output. 
@@ -149,10 +149,10 @@ r0_estimates_country <- readRDS(r0_estimates_country_path)
 Here, we read in the state-level MCV1 coverage data for Nigeria and general supplemental immunization scenarios. 
 
 ```{r}
-ng1_mcv1_data <- readxl::read_excel(ng1_mcv1_data_path) %>% 
+ng1_mcv1_data <- read.csv(ng1_mcv1_data_path) %>% 
   rbind(., data.frame(state="Nigeria", MCV1=54.0))
-general_sia_scenarios <- list("sia1"=readxl::read_excel(path=general_sia_scenario1_path, na="NA"), 
-                              "sia2"=readxl::read_excel(path=general_sia_scenario2_path, na="NA"))
+general_sia_scenarios <- list("sia1"=read.csv(general_sia_scenario1_path, na="NA"), 
+                              "sia2"=read.csv(general_sia_scenario2_path, na="NA"))
 ```
 
 ## Helper functions
