@@ -39,6 +39,8 @@ This study characterizes sub-national heterogeneity in rubella transmission with
 
 This script also contains the code for generating **Figure 2** and **Figure 3**. 
 
+`dynamic_analysis.Rmd`: This Rmarkdown document performs the dynamic analysis. In particular, it investigates how the transient CRS dynamics and 30-year CRS burden change when we allow modest improvements in routine RCV coverage over time and introduce supplemental immunization activities (SIAs). This script also contains the code for generating **Figure 4** and **Figure 5**. 
+
 `local_data`: This folder contains relevant local data including age-specific fertility rates (`ng2_fertility_data.csv`), state-level first-dose measles-containing-vaccine coverage (`ng1_mcv1_data.csv`), state-level zone designations (`ng1_zone_designations.csv`) and structure of hypothetical rubella vaccination campaigns (`summarised_general_sia_scenario1.csv`, `summarised_general_sia_scenario2.csv`). 
 
 `helper_scripts`: This folder contains short helper scripts used by some of the Rmarkdown documents. Further details are provided in the respective script headers. 
