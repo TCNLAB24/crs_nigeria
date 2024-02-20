@@ -32,6 +32,13 @@ This study characterizes sub-national heterogeneity in rubella transmission with
 
 `model_simulators.Rmd`: This Rmarkdown document runs the simulations of the MSEIRV age-structured model. The model itself is implemented in C++ (`mspeirv_ode_model.cpp`). 
 
+`static_analysis.Rmd`: This Rmarkdown document performs the static analyses with routine childhood vaccination only. In particular, the script examines three questions:
+- what is the CRS burden in each state in the absence of any rubella vaccination?
+- how does the CRS burden in each state change following the introduction of routine rubella vaccination at current MCV1 coverage levels?
+- what is the minimally-sufficient routine vaccination coverage required to prevent an increase 30-year CRS burden relative to pre-vaccination burden following the introduction routine rubella vaccination?
+
+This script also contains the code for generating **Figure 2** and **Figure 3**. 
+
 `local_data`: This folder contains relevant local data including age-specific fertility rates (`ng2_fertility_data.csv`), state-level first-dose measles-containing-vaccine coverage (`ng1_mcv1_data.csv`), state-level zone designations (`ng1_zone_designations.csv`) and structure of hypothetical rubella vaccination campaigns (`summarised_general_sia_scenario1.csv`, `summarised_general_sia_scenario2.csv`). 
 
 `helper_scripts`: This folder contains short helper scripts used by some of the Rmarkdown documents. Further details are provided in the respective script headers. 
@@ -44,6 +51,7 @@ To successfully estimation $R_0$ and perform simulations, please follow the step
 - run `paramaterization.Rmd`
 - run `initial_conditions.Rmd`
 - run `model_simulators.Rmd`
+- run `static_analysis.Rmd`
 
 Details of specific R packages required for each step are described in the respective Rmarkdown documents. 
 
