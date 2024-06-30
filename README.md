@@ -3,7 +3,7 @@
 This study characterizes sub-national heterogeneity in rubella transmission within Nigeria and models the impact of local rubella vaccine introduction under different scenarios on the incidence of congenital rubella syndrome (CRS). 
 
 - Details on the methodology are described in: \
-  [TO BE UPDATED POST DAPR].
+  Nakase, Taishi, et al. “The Impact of Sub-National Heterogeneities in Demography and Epidemiology on the Introduction of Rubella Vaccination Programs in Nigeria.” Vaccine, 2024, https://doi.org/10.1016/j.vaccine.2024.05.030.
 
 ## Version History
 
