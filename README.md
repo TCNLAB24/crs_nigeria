@@ -59,4 +59,4 @@ Details of specific R packages required for each step are described in the respe
 
 ## Support 
 
-Please direct questions or bug reports to [TO BE UPDATED POST DAPR].
+Please direct questions or bug reports to tnakase@stanford.edu
