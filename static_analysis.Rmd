@@ -76,9 +76,6 @@ ng1_path <- file.path(DATA_FOLDER, "ng1.rds")
 ng2_pop_path <- file.path(DATA_FOLDER, "ng2_pop.rds")
 ng1_fertility_data_path <- file.path(DATA_FOLDER, "ng1_fertility_data.csv")
 
-# estimates from `R0_estimation.Rmd`
-ng1_r0_summary_path <- file.path(DATA_FOLDER, "MCMC_piecewise_lambda_fit_R0_summary.rds")
-
 # local data
 ng1_zone_mapping_path <- file.path(DATA_FOLDER, "ng1_zone_designations.csv")
 ng1_mcv1_data_path <- file.path(DATA_FOLDER, "ng1_mcv1_data.csv")
@@ -124,7 +121,6 @@ ng1_cbr_data <- read.csv(ng1_fertility_data_path) %>%
   group_by(state) %>% 
   summarise(cbr=sum(births)/sum(n)*1000, .groups="keep") %>% 
   as.data.frame()
-ng1_r0_summary <- readRDS(ng1_r0_summary_path)
 ```
 
 ## Preliminary simulation output data management 
