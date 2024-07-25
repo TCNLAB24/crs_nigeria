@@ -64,20 +64,17 @@ library(lemon)
 Here we use the following links to local data:
 
 ```{r}
-DATA_FOLDER <- file.path("..", "data")
+DATA_FOLDER <- file.path("local_data")
 PARAMETERS_FOLDER <- file.path("parameters")
-POPULATION_DATA_FOLDER <- file.path(DATA_FOLDER, "population_data")
-SPATIAL_POLYGONS_FOLDER <- file.path(DATA_FOLDER, "spatial_polygons")
-VACCINATION_DATA_FOLDER <- file.path(DATA_FOLDER, "vaccination_data")
 
 # derived data from `nigeria_data_organization_exploration.Rmd`
-ng1_path <- file.path(SPATIAL_POLYGONS_FOLDER, "ng1.rds")
-ng2_pop_path <- file.path(POPULATION_DATA_FOLDER, "ng2_pop.rds")
+ng1_path <- file.path(DATA_FOLDER, "ng1.rds")
+ng2_pop_path <- file.path(DATA_FOLDER, "ng2_pop.rds")
 
 # local data
-ng1_fertility_data_path <- file.path(POPULATION_DATA_FOLDER, "ng1_fertility_data.csv")
-ng1_zone_mapping_path <- file.path(POPULATION_DATA_FOLDER, "ng1_zone_designations.xlsx")
-ng1_mcv1_data_path <- file.path(VACCINATION_DATA_FOLDER, "ng1_mcv1_data.xlsx")
+ng1_fertility_data_path <- file.path(DATA_FOLDER, "ng1_fertility_data.csv")
+ng1_zone_mapping_path <- file.path(DATA_FOLDER, "ng1_zone_designations.csv")
+ng1_mcv1_data_path <- file.path(DATA_FOLDER, "ng1_mcv1_data.csv")
 ```
 
 These are the paths we use for the simulation output. 
@@ -109,10 +106,10 @@ ng1_pop <- ng2_pop %>%
   spread(key="gender", value="n") %>% 
   mutate(n=m+f) %>% 
   ungroup()
-ng1_zone_mapping <- readxl::read_excel(ng1_zone_mapping_path)
+ng1_zone_mapping <- read.csv(ng1_zone_mapping_path)
 ng1 <- readRDS(ng1_path) %>%
   left_join(ng1_zone_mapping, by="state")
-ng1_mcv1_data <- readxl::read_excel(ng1_mcv1_data_path)
+ng1_mcv1_data <- read.csv(ng1_mcv1_data_path)
 ng1_cbr_data <- read.csv(ng1_fertility_data_path) %>% 
   gather(key="agegrp", value="asfr", 2:ncol(.)) %>% 
   mutate(agegrp=substr(gsub("X", "", agegrp), 1, 2)) %>%
