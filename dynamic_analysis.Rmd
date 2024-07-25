@@ -83,12 +83,16 @@ ng1_mcv1_data_path <- file.path(VACCINATION_DATA_FOLDER, "ng1_mcv1_data.xlsx")
 These are the paths we use for the simulation output. 
 
 ```{r}
-ALL_OUTPUT_FOLDER <- "../output/"
+ALL_OUTPUT_FOLDER <- "sim_output/"
 STATIC_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "static_risk_simulations", "raw_simulations")
-DYNAMIC_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "dynamic_risk_simulations", "raw_simulations")
-SUMMARY_DYNAMIC_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "dynamic_risk_simulations", "summary_simulations")
 SUMMARY_STATIC_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "static_risk_simulations", "summary_simulations")
-FIGURES_FOLDER <- file.path("figures", "dynamic_analysis")
+
+if(!file.exists(file.path(ALL_OUTPUT_FOLDER, "dynamic_risk_simulations"))) dir.create(file.path(ALL_OUTPUT_FOLDER, "dynamic_risk_simulations"))
+DYNAMIC_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "dynamic_risk_simulations", "raw_simulations"); if(!file.exists(DYNAMIC_SIMS_FOLDER)) dir.create(DYNAMIC_SIMS_FOLDER)
+SUMMARY_DYNAMIC_SIMS_FOLDER <- file.path(ALL_OUTPUT_FOLDER, "dynamic_risk_simulations", "summary_simulations"); if(!file.exists(SUMMARY_DYNAMIC_SIMS_FOLDER)) dir.create(SUMMARY_DYNAMIC_SIMS_FOLDER)
+
+if(!file.exists("figures")) dir.create("figures")
+FIGURES_FOLDER <- file.path("figures", "dynamic_analysis"); if(!file.exists(FIGURES_FOLDER)) dir.create(FIGURES_FOLDER)
 ```
 
 Change these paths if you would like to run this on your local device.
